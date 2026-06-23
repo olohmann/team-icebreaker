@@ -1,0 +1,271 @@
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --panel-2: #334155;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-strong: #0ea5e9;
+  --good: #34d399;
+  --danger: #f87171;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: radial-gradient(1200px 600px at 50% -10%, #1e293b, var(--bg));
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 64px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 16px var(--accent);
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--panel);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 22px;
+  font-size: 0.95rem;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 16px 0 6px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-2);
+  background: #0b1220;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--accent-strong);
+  color: #04222f;
+  transition: transform 0.05s ease, filter 0.15s ease;
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--panel-2);
+  color: var(--text);
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.btn-row.center {
+  justify-content: center;
+}
+
+.full {
+  width: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.link-box {
+  background: #0b1220;
+  border: 1px solid var(--panel-2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.link-box code {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+.status {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+.status.good {
+  color: var(--good);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Master / reveal stage */
+.count-big {
+  font-size: 4rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 10px 0 0;
+  color: var(--accent);
+}
+
+.count-label {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.stage {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  padding: 16px 8px;
+}
+
+.statement {
+  font-size: 1.9rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.reveal-name {
+  font-size: 1.4rem;
+  color: var(--good);
+  font-weight: 700;
+}
+
+.reveal-name .who {
+  font-size: 0.9rem;
+  color: var(--muted);
+  display: block;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.progress {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.guide {
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 360px;
+}
+
+.done-badge {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--good);
+}

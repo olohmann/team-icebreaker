@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+__azurite_db*__.json
+__blobstorage__/
+__queuestorage__/
+.DS_Store
+.deploypkg/
+.azurite/

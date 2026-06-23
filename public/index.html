@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Icebreaker</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="index">
+    <div class="brand"><span class="dot"></span> Icebreaker</div>
+
+    <div class="card">
+      <div id="setup">
+        <h1>Start an icebreaker</h1>
+        <p class="subtitle">
+          Create a session, share the participant link, and run a staged reveal where the room
+          guesses who wrote each card.
+        </p>
+
+        <label for="title">Prompt / question (optional)</label>
+        <input id="title" type="text" maxlength="140" placeholder="e.g. What's your favourite movie?" />
+
+        <div class="btn-row">
+          <button id="create" class="full">Create session</button>
+        </div>
+        <div id="status" class="status"></div>
+      </div>
+
+      <div id="result" class="hidden">
+        <h1>Session ready 🎉</h1>
+        <p class="subtitle">Share the participant link with the team. Keep the master link for yourself.</p>
+
+        <label>Participant link (share this)</label>
+        <div class="link-box">
+          <code id="join-link"></code>
+          <button class="secondary" data-copy="#join-link">Copy</button>
+        </div>
+
+        <label>Master link (private — controls the reveal)</label>
+        <div class="link-box">
+          <code id="master-link"></code>
+          <button class="secondary" data-copy="#master-link">Copy</button>
+        </div>
+
+        <div class="btn-row">
+          <a id="open-master" class="full"><button class="full">Open master view</button></a>
+        </div>
+        <p class="note">
+          The master view never shows names or statements until you reveal them step by step — so even
+          you can play along.
+        </p>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

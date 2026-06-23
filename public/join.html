@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Icebreaker — Join</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="join">
+    <div class="brand"><span class="dot"></span> Icebreaker</div>
+
+    <div class="card">
+      <h1>Add your card</h1>
+      <p class="subtitle" id="prompt">Write a short statement about yourself.</p>
+
+      <div id="form">
+        <label for="name">Your name</label>
+        <input id="name" type="text" maxlength="80" placeholder="Alex" autocomplete="off" />
+
+        <label for="statement">Your statement</label>
+        <textarea id="statement" maxlength="280" placeholder="Something the team can guess about you…"></textarea>
+
+        <div class="btn-row">
+          <button id="save" class="full">Save my card</button>
+        </div>
+        <div id="status" class="status"></div>
+        <p class="note">You have exactly one card. You can edit it until the host starts the reveal.</p>
+      </div>
+
+      <div id="closed" class="hidden">
+        <span class="pill">Submissions closed</span>
+        <p class="note">
+          The reveal has started. Look at the shared screen and guess who wrote each statement!
+        </p>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

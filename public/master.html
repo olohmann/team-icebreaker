@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Icebreaker — Master</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="master">
+    <div class="brand"><span class="dot"></span> Icebreaker · Host</div>
+
+    <div class="card">
+      <h1 id="prompt">Icebreaker</h1>
+
+      <!-- Collect phase -->
+      <div id="collect" class="hidden">
+        <p class="subtitle">Waiting for the team to submit their cards. You only see the count.</p>
+        <p class="count-big" id="count">0</p>
+        <p class="count-label">cards submitted</p>
+        <div class="btn-row center">
+          <button id="start">Start reveal</button>
+        </div>
+        <p class="note">When everyone is in, start the reveal. Submissions then close for everyone.</p>
+      </div>
+
+      <!-- Reveal phase -->
+      <div id="reveal" class="hidden">
+        <div class="stage">
+          <div class="progress" id="progress"></div>
+          <p class="guide" id="guide"></p>
+          <div class="statement" id="statement"></div>
+          <div class="reveal-name hidden" id="reveal-name"></div>
+          <div class="done-badge hidden" id="done-badge">All cards revealed 🎉</div>
+        </div>
+        <div class="btn-row center">
+          <button id="back" class="secondary">◀ Back</button>
+          <button id="next">Next ▶</button>
+        </div>
+        <div class="btn-row center">
+          <button id="reset" class="ghost">Reopen submissions</button>
+        </div>
+        <p class="note">
+          First click shows the statement — let the room guess. Next click reveals the name. Use Back to
+          undo a mis-click.
+        </p>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
