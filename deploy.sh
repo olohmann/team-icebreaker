@@ -35,12 +35,42 @@ az group create -n "$RG" -l "$LOCATION" -o none
 
 echo "==> Storage account $STORAGE (Standard_LRS)"
 az storage account create -n "$STORAGE" -g "$RG" -l "$LOCATION" \
-  --sku Standard_LRS --kind StorageV2 -o none
+  --sku Standard_LRS --kind StorageV2 \
+  --public-network-access Enabled --default-action Allow -o none
+# The app reaches Table Storage over the public endpoint using its managed
+# identity. A subscription policy in this tenant periodically flips
+# publicNetworkAccess to Disabled (it also disables shared keys), which makes
+# every table request fail with "AuthorizationFailure" and crashes the app on
+# startup. Re-assert public access here, and re-run this block if the app starts
+# returning AuthorizationFailure again after an overnight policy remediation.
+az storage account update -n "$STORAGE" -g "$RG" \
+  --public-network-access Enabled --default-action Allow -o none
+SA_PNA="$(az storage account show -n "$STORAGE" -g "$RG" --query publicNetworkAccess -o tsv)"
+echo "    storage publicNetworkAccess: $SA_PNA"
+if [ "$SA_PNA" != "Enabled" ]; then
+  echo "ERROR: storage publicNetworkAccess is '$SA_PNA' — the app cannot reach Table Storage." >&2
+  echo "       A policy likely disabled it. Re-enable, or use a private endpoint:" >&2
+  echo "       az storage account update -n $STORAGE -g $RG --public-network-access Enabled" >&2
+  exit 1
+fi
 SA_ID="$(az storage account show -n "$STORAGE" -g "$RG" --query id -o tsv)"
 TABLE_URL="https://${STORAGE}.table.core.windows.net"
 
 echo "==> App Service plan $PLAN (Linux B1)"
 az appservice plan create -n "$PLAN" -g "$RG" --is-linux --sku B1 -o none
+# A subscription policy in this tenant can silently downgrade the SKU to Free
+# (F1) on *create*. Free tier has a 60 min/day CPU quota; once hit the app is
+# shut off with HTTP 403 / state "QuotaExceeded". Enforce Basic with an explicit
+# update (not caught by the create-time policy) and fail loudly if it sticks at Free.
+az appservice plan update -n "$PLAN" -g "$RG" --sku B1 -o none
+PLAN_SKU="$(az appservice plan show -n "$PLAN" -g "$RG" --query sku.name -o tsv)"
+echo "    plan SKU: $PLAN_SKU"
+if [ "$PLAN_SKU" = "F1" ]; then
+  echo "ERROR: plan is stuck on Free (F1) — the app will hit the daily CPU quota." >&2
+  echo "       Check for an Azure Policy forcing the SKU, or scale manually:" >&2
+  echo "       az appservice plan update -n $PLAN -g $RG --sku B1" >&2
+  exit 1
+fi
 
 echo "==> Web app $APP ($RUNTIME)"
 az webapp create -n "$APP" -g "$RG" -p "$PLAN" --runtime "$RUNTIME" -o none

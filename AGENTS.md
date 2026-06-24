@@ -146,6 +146,30 @@ Hard-won deployment gotchas (don't re-learn these):
 - **Diagnosing a stuck container:** `az webapp log download` and grep the
   `ContainerStream` lines for `Failed to start server` — that's the app's stdout.
 
+### Subscription policy reverts — "it worked yesterday, now it's down"
+
+This tenant runs Azure Policy remediations that periodically **undo** the
+deploy-time configuration overnight. If a previously-working app suddenly returns
+errors, suspect a policy revert **before** suspecting the code. Two confirmed cases:
+
+- **App returns 403 / state `QuotaExceeded`** → the App Service plan was flipped
+  back to **Free (F1)**, whose 60-min/day CPU quota then tripped. Fix:
+  `az appservice plan update -n icebreaker-plan -g rg-icebreaker --sku B1`,
+  then `az webapp restart`. `deploy.sh` enforces B1 and fails loudly on F1.
+- **App crashes on startup with `AuthorizationFailure` on Table Storage** (managed
+  identity token IS acquired, RBAC role IS present and matches) → the storage
+  account's **`publicNetworkAccess` was flipped to `Disabled`**, blocking the app's
+  public-endpoint table calls. Confirm with
+  `az storage account show -n icebreaker6f9a0ab5 -g rg-icebreaker --query "{pna:publicNetworkAccess,def:networkRuleSet.defaultAction}"`.
+  Fix: `az storage account update -n icebreaker6f9a0ab5 -g rg-icebreaker --public-network-access Enabled --default-action Allow`,
+  then `az webapp restart`. `deploy.sh` asserts this and fails loudly if it sticks.
+  - Note: `AuthorizationFailure` here is a **networking** denial, not a missing
+    role. `AuthorizationPermissionMismatch` would mean the RBAC role is wrong —
+    different problem. Don't churn on role assignments for `AuthorizationFailure`.
+  - A durable fix would be a **private endpoint + VNet integration** (needs a
+    Standard+ plan), but that's overkill for an icebreaker; re-enabling public
+    access is the pragmatic remediation.
+
 Tear down: `az group delete -n rg-icebreaker --yes --no-wait`.
 
 ## Environment notes
